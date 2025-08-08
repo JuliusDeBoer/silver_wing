@@ -1,15 +1,28 @@
 #[macro_use]
 extern crate rocket;
 
-use rocket::serde::json::Json;
-use shared::HealthStatus;
+#[get("/")]
+fn index() -> &'static str {
+    "Hello from the API!"
+}
 
-#[get("/health")]
-fn health() -> Json<HealthStatus> {
-    Json(HealthStatus { healthy: true })
+#[get("/kitty")]
+fn kitty() -> &'static str {
+    "                                     ,
+              ,-.       _,---._ __  / \\
+             /  )    .-'       `./ /   \\
+            (  (   ,'            `/    /|
+             \\  `-\"             \\'\\   / |
+              `.              ,  \\ \\ /  |
+               /`.          ,'-`----Y   |
+              (            ;        |   '
+              |  ,-.    ,-'         |  /
+              |  | (   |        hjw | /
+              )  |  \\  `.___________|/
+              `--'   `--'"
 }
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![health])
+    rocket::build().mount("/", routes![index, kitty])
 }
