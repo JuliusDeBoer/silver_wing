@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    silver_wing_web_lib::run()
+    silver_wing_app_lib::run()
 }

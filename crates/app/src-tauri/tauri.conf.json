@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "silver_wing_web",
+  "productName": "silver_wing_app",
   "version": "0.1.0",
-  "identifier": "silver_wing.web",
+  "identifier": "com.silverwing.app",
   "build": {
     "frontendDist": "../src"
   },
@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "silver_wing_web",
+        "title": "silver_wing_app",
         "width": 800,
         "height": 600
       }

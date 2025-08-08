@@ -3728,7 +3728,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "silver_wing_web"
+name = "silver_wing_app"
 version = "0.1.0"
 dependencies = [
  "serde",
