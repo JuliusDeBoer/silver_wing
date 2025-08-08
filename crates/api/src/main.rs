@@ -3,10 +3,16 @@ extern crate rocket;
 
 use cuid2::cuid;
 use rocket::serde::json::Json;
-use shared::Entry;
+use shared::{Entry, HealthStatus};
 use std::sync::Mutex;
 
 static QUEUE: Mutex<Vec<Entry>> = Mutex::new(Vec::new());
+
+#[get("/health")]
+
+fn health() -> Json<HealthStatus> {
+    Json(HealthStatus { healthy: true })
+}
 
 #[get("/kitty")]
 fn kitty() -> &'static str {
@@ -49,5 +55,5 @@ fn clear(entries: Json<Vec<String>>) {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![push, get_entries, clear, kitty])
+    rocket::build().mount("/", routes![health, push, get_entries, clear, kitty])
 }
