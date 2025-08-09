@@ -1,7 +1,12 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn greet(name: &str) {
+    let client = reqwest::blocking::Client::new();
+    client
+        .post("http://localhost:8000/push")
+        .body(String::from(name))
+        .send()
+        .expect("Could not send entry to server");
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

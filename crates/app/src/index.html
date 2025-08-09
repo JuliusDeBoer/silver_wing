@@ -10,34 +10,11 @@
 
     <body>
         <main class="container">
-            <h1>God has left us</h1>
-
-            <div class="row">
-                <a href="https://tauri.app" target="_blank">
-                    <img
-                        src="/assets/tauri.svg"
-                        class="logo tauri"
-                        alt="Tauri logo"
-                    />
-                </a>
-                <a
-                    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-                    target="_blank"
-                >
-                    <img
-                        src="/assets/javascript.svg"
-                        class="logo vanilla"
-                        alt="JavaScript logo"
-                    />
-                </a>
-            </div>
-            <p>Now to figure out how to connect to an API...</p>
-
-            <form class="row" id="greet-form">
-                <input id="greet-input" placeholder="Enter a name..." />
-                <button type="submit">Greet</button>
+            <form id="greet-form">
+                <textarea id="greet-input"></textarea>
+                <br />
+                <button type="submit">Submit</button>
             </form>
-            <p id="greet-msg"></p>
         </main>
     </body>
 </html>
