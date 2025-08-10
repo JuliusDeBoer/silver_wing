@@ -1,9 +1,11 @@
+static HOST = "localhost:8000"
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) {
     let client = reqwest::blocking::Client::new();
     client
-        .post("http://localhost:8000/push")
+        .post(format!("http://{}/push", HOST))
         .body(String::from(name))
         .send()
         .expect("Could not send entry to server");
