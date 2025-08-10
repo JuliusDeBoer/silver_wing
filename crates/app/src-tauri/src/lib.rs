@@ -1,4 +1,4 @@
-static HOST = "localhost:8000"
+static HOST: &str = "localhost:8000";
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
