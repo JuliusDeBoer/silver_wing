@@ -5,7 +5,7 @@ static HOST: &str = "localhost:8000";
 fn greet(name: &str) {
     let client = reqwest::blocking::Client::new();
     client
-        .post(format!("http://{}/push", HOST))
+        .post(format!("http://{HOST}/push"))
         .body(String::from(name))
         .send()
         .expect("Could not send entry to server");
