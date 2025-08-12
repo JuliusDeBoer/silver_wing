@@ -4,8 +4,7 @@ extern crate rocket;
 use chrono::Local;
 use cuid2::cuid;
 use rocket::serde::json::Json;
-use serde::Deserialize;
-use shared::{Entry, HealthStatus};
+use shared::{Entry, HealthStatus, SimpleEntry};
 use std::sync::Mutex;
 
 static QUEUE: Mutex<Vec<Entry>> = Mutex::new(Vec::new());
@@ -14,12 +13,6 @@ static HEALTH: Mutex<HealthStatus> = Mutex::new(HealthStatus {
     last_push: None,
     last_clean: None,
 });
-
-#[derive(Deserialize)]
-struct SimpleEntry {
-    pub title: String,
-    pub body: String,
-}
 
 #[get("/health")]
 fn health() -> Json<HealthStatus> {

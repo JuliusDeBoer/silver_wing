@@ -4083,6 +4083,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "shared",
  "tauri",
  "tauri-build",
  "tauri-plugin-opener",

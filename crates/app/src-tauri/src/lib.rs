@@ -1,12 +1,16 @@
 static HOST: &str = "localhost:8000";
+use shared::SimpleEntry;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn greet(name: &str) {
+fn greet(title: &str, body: &str) {
     let client = reqwest::blocking::Client::new();
     client
         .post(format!("http://{HOST}/push"))
-        .body(String::from(name))
+        .json(&SimpleEntry {
+            title: title.into(),
+            body: body.into(),
+        })
         .send()
         .expect("Could not send entry to server");
 }

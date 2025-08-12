@@ -15,3 +15,9 @@ pub struct Entry {
     pub body: String,
     pub date: DateTime<Local>,
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct SimpleEntry {
+    pub title: String,
+    pub body: String,
+}
