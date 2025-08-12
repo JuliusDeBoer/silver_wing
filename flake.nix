@@ -18,18 +18,20 @@
         at-spi2-atk
         atkmm
         cairo
+        cargo-tauri
         gdk-pixbuf
         glib
+        gobject-introspection
         gtk3
         harfbuzz
+        leptosfmt
         librsvg
         libsoup_3
-        cargo-tauri
+        openssl
         pango
         pkg-config
-        gobject-introspection
+        trunk
         webkitgtk_4_1
-        openssl
       ];
     };
   };

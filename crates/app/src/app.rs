@@ -1,14 +1,22 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tauri App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+use leptos::task::spawn_local;
+use leptos::{ev::SubmitEvent, prelude::*};
+use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::*;
 
-    <body>
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = ["window", "__TAURI__", "core"])]
+    async fn invoke(cmd: &str, args: JsValue) -> JsValue;
+}
+
+#[derive(Serialize, Deserialize)]
+struct GreetArgs<'a> {
+    name: &'a str,
+}
+
+#[component]
+pub fn App() -> impl IntoView {
+    view! {
         <div class="vignette"></div>
         <form id="greet-form" class="container">
             <h1>Silver Wing</h1>
@@ -104,5 +112,5 @@
             </div>
             <button type="submit">Submit</button>
         </form>
-    </body>
-</html>
+    }
+}
