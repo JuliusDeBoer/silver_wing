@@ -1,17 +1,30 @@
 #[macro_use]
 extern crate rocket;
 
+use chrono::Local;
 use cuid2::cuid;
 use rocket::serde::json::Json;
+use serde::Deserialize;
 use shared::{Entry, HealthStatus};
 use std::sync::Mutex;
 
 static QUEUE: Mutex<Vec<Entry>> = Mutex::new(Vec::new());
+static HEALTH: Mutex<HealthStatus> = Mutex::new(HealthStatus {
+    healthy: true,
+    last_push: None,
+    last_clean: None,
+});
+
+#[derive(Deserialize)]
+struct SimpleEntry {
+    pub title: String,
+    pub body: String,
+}
 
 #[get("/health")]
-
 fn health() -> Json<HealthStatus> {
-    Json(HealthStatus { healthy: true })
+    let health = HEALTH.lock().expect("Could not get lock");
+    Json(health.clone())
 }
 
 #[get("/kitty")]
@@ -31,13 +44,19 @@ fn kitty() -> &'static str {
 }
 
 #[post("/push", data = "<entry>")]
-fn push(entry: &str) {
-    let binding = &QUEUE;
-    let mut queue = binding.lock().expect("Could not get lock");
+fn push(entry: Json<SimpleEntry>) {
+    let queue_binding = &QUEUE;
+    let health_binding = &HEALTH;
+    let mut queue = queue_binding.lock().expect("Could not get lock");
+    let mut health = health_binding.lock().expect("Could not get lock");
+
     queue.push(Entry {
         id: cuid(),
-        body: entry.into(),
+        title: entry.title.clone(),
+        body: entry.body.clone(),
+        date: Local::now(),
     });
+    health.last_clean = Some(Local::now());
 }
 
 #[get("/entries")]
@@ -48,9 +67,12 @@ fn get_entries() -> Json<Vec<shared::Entry>> {
 
 #[put("/clear", data = "<entries>")]
 fn clear(entries: Json<Vec<String>>) {
-    let binding = &QUEUE;
-    let mut queue = binding.lock().expect("Could not get lock");
+    let queue_binding = &QUEUE;
+    let health_binding = &HEALTH;
+    let mut queue = queue_binding.lock().expect("Could not get lock");
+    let mut health = health_binding.lock().expect("Could not get lock");
     queue.retain(|entry| !entries.contains(&entry.id));
+    health.last_clean = Some(Local::now());
 }
 
 #[launch]

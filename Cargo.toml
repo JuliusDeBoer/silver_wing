@@ -5,3 +5,13 @@ members = ["crates/api", "crates/app/src-tauri", "crates/shared"]
 [workspace.package]
 publish = false
 edition = "2024"
+
+[profile.dev]
+incremental = true
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
