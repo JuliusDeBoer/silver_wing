@@ -1,7 +1,7 @@
-use leptos::task::spawn_local;
 use leptos::{ev::SubmitEvent, prelude::*};
-use serde::{Deserialize, Serialize};
+use shared::SimpleEntry;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::spawn_local;
 
 #[wasm_bindgen]
 extern "C" {
@@ -9,29 +9,43 @@ extern "C" {
     async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 }
 
-#[derive(Serialize, Deserialize)]
-struct GreetArgs<'a> {
-    name: &'a str,
-}
-
 #[component]
 pub fn App() -> impl IntoView {
+    let title = RwSignal::new(String::new());
+    let body = RwSignal::new(String::new());
+
+    let on_submit = move |ev: SubmitEvent| {
+        ev.prevent_default();
+        spawn_local(async move {
+            let args = serde_wasm_bindgen::to_value(&SimpleEntry {
+                title: title.get_untracked(),
+                body: body.get_untracked(),
+            })
+            .expect("Could not parse entry");
+            invoke("push", args).await;
+
+            title.set(String::new());
+            body.set(String::new());
+        });
+    };
+
     view! {
         <div class="vignette"></div>
-        <form id="greet-form" class="container">
+        <form class="container" on:submit=on_submit>
             <h1>Silver Wing</h1>
             <div class="receipt">
                 <input
                     type="text"
-                    id="greet-input"
                     placeholder="Title"
                     class="receipt_title"
+                    bind:value=title
                     required
                 />
                 <textarea
                     id="greet-textarea"
                     placeholder="Add a body (optional)"
                     class="receipt_body"
+                    bind:value=body
                 ></textarea>
                 <svg
                     id="barcode"

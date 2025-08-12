@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/api", "crates/app/src-tauri", "crates/shared"]
+members = ["crates/api", "crates/app/src-tauri", "crates/shared", "crates/app"]
 
 [workspace.package]
 publish = false
