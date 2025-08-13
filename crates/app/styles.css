@@ -96,3 +96,39 @@ textarea {
     width: 100%;
 }
 
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/*
+    HACK(Julius): Now. You *could* look at this and think: "Which fucking idiot
+                  would create two of the same classes". However. I want you to
+                  know that I do not really care. This *works*. It doesn't do it
+                  well. But that doesn't matter. It's a hack. Bite me!
+*/
+
+.receipt_anim {
+    animation: receipt_anim 1s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.receipt_anim_2 {
+    animation: receipt_anim_2 1s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes receipt_anim {
+ 0% {transform: none;}
+ 50% {transform: translateY(110%);}
+ 51% {filter: opacity(0)}
+ 52% {transform: translateY(-110%);}
+ 53% {{filter: opacity(100%)}}
+ 100% { transform: translateY(0);}
+}
+
+@keyframes receipt_anim_2 {
+ 0% {transform: none;}
+ 50% {transform: translateY(110%);}
+ 51% {filter: opacity(0)}
+ 52% {transform: translateY(-110%);}
+ 53% {{filter: opacity(100%)}}
+ 100% { transform: translateY(0);}
+}

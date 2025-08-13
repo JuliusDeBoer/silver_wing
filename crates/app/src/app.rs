@@ -1,3 +1,5 @@
+use std::{thread, time::Duration};
+
 use leptos::{ev::SubmitEvent, prelude::*};
 use shared::SimpleEntry;
 use wasm_bindgen::prelude::*;
@@ -14,8 +16,18 @@ pub fn App() -> impl IntoView {
     let title = RwSignal::new(String::new());
     let body = RwSignal::new(String::new());
 
+    let receipt_animation = RwSignal::new(false);
+    let receipt_animation_2 = RwSignal::new(false);
+
     let on_submit = move |ev: SubmitEvent| {
         ev.prevent_default();
+        if receipt_animation.get() {
+            receipt_animation.set(false);
+            receipt_animation_2.set(true);
+        } else {
+            receipt_animation.set(true);
+            receipt_animation_2.set(false);
+        }
         spawn_local(async move {
             let args = serde_wasm_bindgen::to_value(&SimpleEntry {
                 title: title.get_untracked(),
@@ -33,7 +45,8 @@ pub fn App() -> impl IntoView {
         <div class="vignette"></div>
         <form class="container" on:submit=on_submit>
             <h1>Silver Wing</h1>
-            <div class="receipt">
+            <div class="overflow-hidden">
+            <div class="receipt" class:receipt_anim=receipt_animation class:receipt_anim_2=receipt_animation_2>
                 <input
                     type="text"
                     placeholder="Title"
@@ -123,6 +136,7 @@ pub fn App() -> impl IntoView {
                 </svg>
 
                 <p>2025-08-11T16:56:03 CEST</p>
+            </div>
             </div>
             <button type="submit">Submit</button>
         </form>
